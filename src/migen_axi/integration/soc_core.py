@@ -6,6 +6,8 @@ from misoc.interconnect import csr_bus
 from ..interconnect import axi, axi2csr
 from ..cores import ps7
 
+from operator import itemgetter
+
 
 def interrupt2irq_id(idx):
     if irqf2p_idx < 8:
