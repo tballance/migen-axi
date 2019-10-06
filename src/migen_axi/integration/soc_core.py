@@ -24,7 +24,7 @@ class SoCCore(Module):
                  csr_data_width=8,
                  csr_address_width=14,
                  max_addr=0xc0000000,
-                 ident="SoCCore"):
+                 ident=None):
         self.platform = platform
         # self.clk_freq = clk_freq
 
@@ -38,7 +38,7 @@ class SoCCore(Module):
         self._axi_slaves = SlaveManager(max_addr)
 
         self.csr_devices = [
-            "identifier_mem",
+            "identifier",
         ]
         self.interrupt_devices = []
 
@@ -54,7 +54,8 @@ class SoCCore(Module):
         self.register_mem("csr", self.mem_map["csr"], 4 * 2**csr_address_width,
                           self.axi2csr.bus)
 
-        self.submodules.identifier = identifier.Identifier(ident)
+        if ident:
+            self.submodules.identifier = identifier.Identifier(ident)
 
     def add_axi_slave(self, origin, length, interface):
         if self.finalized:
