@@ -37,6 +37,7 @@ class SoCCore(Module):
 
         self._axi_slaves = SlaveManager(max_addr)
 
+        self.config = {}
         self.csr_devices = [
             "identifier",
         ]
@@ -124,6 +125,8 @@ class SoCCore(Module):
             self._constants.append(
                 (("_".join([name, constant.name]).upper(),
                   constant.value.value)))
+        for name, value in sorted(self.config.items(), key=itemgetter(0)):
+            self._constants.append(("CONFIG_" + name.upper(), value))
 
         # Interrupts
         for n, name in enumerate(self.interrupt_devices):
